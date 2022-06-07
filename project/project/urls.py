@@ -15,13 +15,25 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.http import HttpResponse
+from django.utils.translation import gettext as _
+from django.views import View
+
+
+# class Index(View):
+    # def get(self, request):
+       #  string = _('Hello world')
+       #  return HttpResponse(string)
+
 
 urlpatterns = [
+    path('i18n/', include('django.conf.urls.i18n')),
     path('admin/', admin.site.urls),
     path('pages/', include('django.contrib.flatpages.urls')),
     path('news/', include('simpleapp.urls')),
     path('', include('protect.urls')),
     path('sign/', include('sign.urls')),
     path('accounts/', include('allauth.urls')),
-    path('appointment/', include(('appointment.urls', 'appointment'), namespace='appointment'))
+    path('appointment/', include(('appointment.urls', 'appointment'), namespace='appointment')),
+    # path('index/', Index.as_view())
 ]

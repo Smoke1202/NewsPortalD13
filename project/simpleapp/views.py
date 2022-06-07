@@ -112,3 +112,14 @@ def unsubscribe_me(request, pk):
         return redirect(request.META.get('HTTP_REFERER'))
     else:
         return redirect(request.META.get('HTTP_REFERER'))
+
+
+class Index(View):
+    def get(self, request):
+        models = Post.objects.all()
+
+        context = {
+            'models': models,
+        }
+
+        return HttpResponse(render(request, 'news.html', context))

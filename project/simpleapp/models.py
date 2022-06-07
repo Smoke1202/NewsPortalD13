@@ -2,7 +2,6 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.core.cache import cache
 
-
 class Author(models.Model):
     name = models.CharField(max_length=255)
     user = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -35,7 +34,7 @@ class Author(models.Model):
 
 
 class Category(models.Model):
-    name = models.CharField(max_length=255, unique=True)
+    name = models.CharField(max_length=255, unique=True, )
     subscribers = models.ManyToManyField(User, through='UserCategory')
 
     def __str__(self):
