@@ -9,7 +9,9 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect
 from django.http import HttpResponse
 from django.core.cache import cache
-
+from django.utils import timezone
+import pytz
+from django.utils.translation import gettext as _
 
 class PostList(ListView):
     model = Post
@@ -116,10 +118,20 @@ def unsubscribe_me(request, pk):
 
 class Index(View):
     def get(self, request):
-        models = Post.objects.all()
+        curent_time = timezone.now()
+
+        # .  Translators: This message appears on the home page only
+        models = MyModel.objects.all()
 
         context = {
             'models': models,
+            'current_time': timezone.now(),
+            'timezones': pytz.common_timezones  # добавляем в контекст все доступные часовые пояса
         }
 
         return HttpResponse(render(request, 'news.html', context))
+
+    #  по пост-запросу будем добавлять в сессию часовой пояс, который и будет обрабатываться написанным нами ранее middleware
+    def post(self, request):
+        request.session['django_timezone'] = request.POST['timezone']
+        return redirect('/')
